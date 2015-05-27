@@ -37,8 +37,8 @@ type storage struct {
 
 // Storage is the engine that can be used to store images and retrieve their paths
 type Storage interface {
-	Store(mediaType string, data []byte) error
-	StoreDataURL(string) error
+	Store(mediaType string, data []byte) (string, error)
+	StoreDataURL(string) (string, error)
 	Checksum([]byte) string
 	ChecksumDataURL(string) (string, error)
 	PathFor(checksum string) (string, error)
@@ -62,7 +62,7 @@ func NewWithCustomResizer(conf *Config, resizer Resizer) Storage {
 }
 
 func getStructuredFolderPath(checksum string) string {
-	lvl1Dir := checksum[len(checksum)-2:]
+	lvl1Dir := checksum[len(checksum)-3:]
 	return path.Join(lvl1Dir, checksum)
 }
 
